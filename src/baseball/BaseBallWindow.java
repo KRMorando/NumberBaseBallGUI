@@ -3,7 +3,7 @@ package baseball;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +28,10 @@ public class BaseBallWindow extends JFrame {
 	JButton[] keyBtn;
 	
 	public BaseBallWindow(String id) {
+		if(id.equals(UserList.Master))
+			setTitle("관리자 계정");
+		else
+			setTitle("일반 계정");
 		makeNumber();
 		this.id = id;
 		
@@ -120,9 +124,9 @@ public class BaseBallWindow extends JFrame {
 		
 		exitBtn = new JButton("종료");
 		exitBtn.addActionListener(e -> {
+			new MainMenuWindow(id);
 			dispose();
 		});
-		//exitBtn.setBounds(0, 265, 500, 30);
 		exitBtn.setBounds(0, 270, 500, 30);
 		
 		leftPanel.add(playerTf, BorderLayout.NORTH);
@@ -160,6 +164,10 @@ public class BaseBallWindow extends JFrame {
 			} while(isVaild);
 			GameNumber[i] = num;
 		}
+		System.out.print("생성된 답: ");
+		for(int i : GameNumber)
+			System.out.print(i + " ");
+		System.out.println();
 	}
 	
 	public void checkNumber() {
@@ -190,11 +198,12 @@ public class BaseBallWindow extends JFrame {
 		UserList ul = new UserList();
 		for(int i = 0; i < ul.list.size(); i++) {
 			if(ul.list.get(i).id.equals(id)) {
-				ul.list.get(i).playerCount++;
-				if(ul.list.get(i).rank[9] > GameCount) {
-					ul.list.get(i).rank[9] = GameCount;
-					Arrays.sort(ul.list.get(i).rank);
-				}
+				User user = ul.list.get(i);
+				user.playerCount++;
+				user.rank.add(GameCount);
+				Collections.sort(user.rank);
+				if(user.rank.size() > 10)
+					user.rank.remove(10);
 			}
 		}
 		JOptionPane.showMessageDialog(null, "시도횟수: " + GameCount + "\n축하합니다! 게임완료", "게임 완료", JOptionPane.INFORMATION_MESSAGE);

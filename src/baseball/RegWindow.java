@@ -43,7 +43,7 @@ public class RegWindow extends JFrame {
 				if(!pw.equals(new String(pwwPf.getPassword())))
 					JOptionPane.showMessageDialog(null, "암호 불일치", "회원등록", JOptionPane.WARNING_MESSAGE);
 				else {
-					ul.addUser(id, pw, null, 0);
+					ul.addUser(id, pw, "", 0);
 					ul.saveList();
 					JOptionPane.showMessageDialog(null, "회원 등록 완료", "회원등록", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
